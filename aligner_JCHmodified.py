@@ -259,6 +259,9 @@ class Aligner(object):
     def best_alignment(self, target, sequences, candidate_scoring_ranges=None, **kwargs):
         # =============================================================================
         '''
+        target: read (str)
+        sequences: list of reference sequences
+
         Essentially just runs align function on each of the reference sequences and
         returns the index of the best reference sequence along with the results of align() 
         '''
