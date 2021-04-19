@@ -118,21 +118,18 @@ to one of the reference sequences. When a read is aligned to the reference seque
 only the given ranges of the reference sequence will be used to score the alignment.
 This is useful if leading or trailing regions are known to be varied.
 '''
-# =============================================================================
-# added by JCH
-'''
-Ex: REFERENCE_SCORING_RANGES = [[(0,9),(36,64)],[(0,9),(36,64)]]
-I think that it would've been maybe easier to just use a string with a convention for scoring
-like score the N's and ignore the X's:
-REFERENCE_SCORING_RANGES = ["NNNNNNNXXXNXNXXXNNNNNNNN"]
-or have it built into the reference sequences:
-REFERENCE_SEQUENCES = ["CGATCTCCCANNNNNNNNNNNNNNNNNNAAATCGATTTCCCGGACGATCTGCCAAACGACTTACTTGA"]
-'''
-
 
 # =============================================================================
-
 REFERENCE_SCORING_RANGES = [[(0,9),(18,21),(24,27),(36,50),(59,65)]]
+
+'''
+Corresponds to the following scoring map:
+NNNNNNNNNxxxxxxxxxNNNxxxNNNxxxxxxxxxNNNNNNNNNNNNNNxxxxxxxxxNNNNNN
+Where N's are scored and x's are not scored
+
+'''
+# =============================================================================
+
 
 '''
 List of expression strings which will be evaluated and written out to the
@@ -225,8 +222,9 @@ def combine_records(forward_record, reverse_record, reference_sequences, min_ove
             base, quality = max([(forward_base, forward_quality), (reverse_base, reverse_quality)], key=lambda x: x[1])
             combined_sequence += base
             combined_quality.append(quality)
-    if len(combined_sequence) > 75:
-        print('\n'.join(aligner.format_multiple(*alignment_set)))
+    # if len(combined_sequence) > 75:
+        # print "problematic alignment alignment"
+        # print('\n'.join(aligner.format_multiple(*alignment_set)))
     return reference_index, combined_sequence, combined_quality
 
 def combine_records_processor(references, (forward, reverse), threshold=0, misreads=0, threshold_reverse=0, misreads_reverse=0, output_ranges=None, **kwargs):
